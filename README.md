@@ -207,5 +207,5 @@ MIT
 ---
 
 <p align="center">
-  <sub>Built with ❤️ for COROS runners</sub>
+  <sub>Built with ❤️ for COROS runners🏃</sub>
 </p>
