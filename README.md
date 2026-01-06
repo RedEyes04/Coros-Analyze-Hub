@@ -115,17 +115,21 @@ python coros-activities-scraper.py
 
 | Secret | 说明 |
 |--------|------|
-| `SERVER_HOST` | 服务器地址 |
-| `SERVER_PASSWORD` | 服务器 root 密码 |
+| `SSH_HOST` | 服务器地址 |
+| `SSH_USER` | SSH 用户名 |
+| `SSH_PRIVATE_KEY` | SSH 私钥 |
+| `SSH_PORT` | SSH 端口（默认 22） |
+| `REMOTE_PATH` | 服务器项目路径 |
 
 #### Step 2: 服务器准备
 
 ```bash
-# 在服务器项目目录
-cd /www/wwwroot/coros.redeyes.top/coros-activities-scraper
+# 在服务器上克隆项目
+git clone https://github.com/your-username/coros-analyze-hub.git
+cd coros-analyze-hub/coros-activities-scraper
 
 # 安装 Python 依赖
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 #### Step 3: 本地触发同步
