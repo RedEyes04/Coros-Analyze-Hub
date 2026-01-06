@@ -9,7 +9,7 @@
 | `get-token.py` | 本地登录获取 token，自动推送到 GitHub | 本地电脑 |
 | `fetch-with-token.py` | 根据 token 调用 API 抓取数据 | 服务器/本地 |
 | `coros-activities-scraper.py` | 一体化脚本：登录 + 抓取 | 本地电脑 |
-| `coros-activities-scraper-by-ui.py` | 自动登录版（CI 用，需配置账密） | CI/本地 |
+| `coros-activities-scraper-by-ui.py` | 自动登录版（CI 用，需配置账密） | CI/本地 |（弃用）
 
 ## 🚀 快速开始
 
