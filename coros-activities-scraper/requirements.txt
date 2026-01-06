@@ -1,1 +1,5 @@
+# 浏览器自动化（本地获取 token）
 playwright
+
+# HTTP 请求（服务器端抓取数据）
+requests

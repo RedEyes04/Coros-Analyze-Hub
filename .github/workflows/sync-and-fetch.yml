@@ -1,0 +1,86 @@
+# COROS 数据自动抓取 Workflow
+#
+# 触发条件：token.txt 文件更新时
+# 功能：同步 token 到服务器，执行数据抓取，更新数据文件
+#
+# 需要配置的 Secrets：
+#   - SERVER_HOST: 服务器地址
+#   - SERVER_PASSWORD: 服务器密码
+
+name: Sync & Fetch COROS Data
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'coros-activities-scraper/token.txt'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync-and-fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 检出仓库
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. 安装必要工具
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
+
+      # 3. 同步 token 文件到服务器
+      - name: Sync token file to server
+        run: |
+          echo "Syncing token.txt to server..."
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
+            --ignore-errors --progress \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./coros-activities-scraper/token.txt \
+            root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/coros-activities-scraper/
+
+      # 4. 在服务器上执行抓取脚本
+      - name: Run fetch script on server
+        run: |
+          echo "Running fetch script on server..."
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.SERVER_HOST }} << 'EOF'
+            cd /www/wwwroot/coros.redeyes.top/coros-activities-scraper
+            
+            # 激活虚拟环境（如果有）
+            if [ -f "venv/bin/activate" ]; then
+              source venv/bin/activate
+            fi
+            
+            # 执行抓取脚本
+            python3 fetch-with-token.py --pages 3
+            
+            echo "===== 抓取完成 ====="
+            ls -la ../public/activities_data.json
+          EOF
+
+      # 5. 从服务器拉取更新后的数据
+      - name: Fetch updated data from server
+        run: |
+          echo "Fetching updated data from server..."
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
+            --ignore-errors --progress \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/public/activities_data.json \
+            ./public/
+
+      # 6. 提交并推送更新的数据
+      - name: Commit and push updated data
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          if git diff --quiet public/activities_data.json; then
+            echo "No changes to commit"
+          else
+            git add public/activities_data.json
+            git commit -m "chore: update activities data [skip ci]"
+            git push
+          fi

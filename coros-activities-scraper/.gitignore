@@ -1,1 +1,16 @@
-/.DS_Store
+# OS
+.DS_Store
+
+# Debug screenshots
+debug-*.png
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# IDE
+.idea/
