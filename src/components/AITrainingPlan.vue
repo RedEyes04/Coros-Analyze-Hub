@@ -305,23 +305,23 @@ function reset() {
     <!-- Input Form -->
     <div v-else-if="!aiResponse" class="input-form">
       <div class="form-row">
-        <div class="form-group">
-          <label>目标成绩</label>
-          <n-input 
-            v-model:value="targetGoal" 
+      <div class="form-group">
+        <label>目标成绩</label>
+        <n-input 
+          v-model:value="targetGoal" 
             placeholder="如：全马 3:00"
-            :disabled="isLoading"
-          />
-        </div>
-        
-        <div class="form-group">
-          <label>训练阶段</label>
-          <n-select 
-            v-model:value="trainingPhase" 
-            :options="phaseOptions"
-            placeholder="选择阶段"
-            :disabled="isLoading"
-          />
+          :disabled="isLoading"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label>训练阶段</label>
+        <n-select 
+          v-model:value="trainingPhase" 
+          :options="phaseOptions"
+          placeholder="选择阶段"
+          :disabled="isLoading"
+        />
         </div>
       </div>
       
@@ -345,7 +345,7 @@ function reset() {
         </div>
         <button class="reset-btn" @click="reset">重新生成</button>
       </div>
-
+      
       <!-- Week Tabs -->
       <div class="week-tabs">
         <button 
@@ -403,7 +403,7 @@ function reset() {
           </div>
         </template>
       </div>
-
+      
       <!-- 训练建议 -->
       <div v-if="aiResponse.parsed.tips.length > 0" class="tips-section">
         <div class="tips-title">训练建议</div>
@@ -411,7 +411,7 @@ function reset() {
           <li v-for="(tip, i) in aiResponse.parsed.tips" :key="i">{{ tip }}</li>
         </ul>
       </div>
-
+      
       <!-- 原始回复 -->
       <details class="raw-response">
         <summary>查看完整回复</summary>
