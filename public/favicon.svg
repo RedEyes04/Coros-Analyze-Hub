@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- 外圆环 - 手表表盘 -->
+  <circle cx="16" cy="16" r="14" stroke="#ffffff" stroke-width="2"/>
+  <!-- 内圆 -->
+  <circle cx="16" cy="16" r="10" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- 跑步者剪影 -->
+  <g fill="#ffffff">
+    <!-- 头 -->
+    <circle cx="16" cy="9" r="2"/>
+    <!-- 身体 -->
+    <path d="M14 12.5L17 15L14.5 18L12 16.5L14 12.5Z"/>
+    <!-- 前腿 -->
+    <path d="M17 15L20 19L18.5 20L15 17L17 15Z"/>
+    <!-- 后腿 -->
+    <path d="M14.5 18L12 22L10.5 21L12.5 17L14.5 18Z"/>
+  </g>
+  <!-- 表冠 -->
+  <rect x="29" y="14" width="3" height="4" rx="1" fill="#ffffff"/>
+</svg>
