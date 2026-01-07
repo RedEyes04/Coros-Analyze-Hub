@@ -3,7 +3,7 @@ name: Deploy COROS Token & Fetch Data
 on:
   push:
     paths:
-      - token.txt
+      - coros-activities-scraper/token.txt
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
             -e "ssh -o StrictHostKeyChecking=no" \
-            token.txt fetch.py \
+            coros-activities-scraper/token.txt fetch.py \
             root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/
 
       - name: Run fetch on server
