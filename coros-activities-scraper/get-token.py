@@ -2,10 +2,15 @@
 import time
 import subprocess
 from datetime import datetime
+from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-TOKEN_FILE = "coros-activities-scraper/token.txt"
+# ===== 路径：永远指向本脚本所在目录 =====
+BASE_DIR = Path(__file__).resolve().parent
+TOKEN_FILE = BASE_DIR / "token.txt"
+
 COMMIT_MSG = "chore: update COROS token"
+
 
 def get_token():
     with sync_playwright() as p:
@@ -36,22 +41,22 @@ def save_token(token: str):
         f"# updated_at: {datetime.now()}\n"
         f"# source: local-browser\n"
     )
-    with open(TOKEN_FILE, "w") as f:
-        f.write(content)
+
+    TOKEN_FILE.write_text(content, encoding="utf-8")
+    print(f"✅ token 已写入：{TOKEN_FILE}")
 
 
 def git_commit_push():
     diff = subprocess.run(
-        ["git", "status", "--porcelain", TOKEN_FILE],
+        ["git", "status", "--porcelain", str(TOKEN_FILE)],
         capture_output=True,
         text=True
     ).stdout.strip()
 
     if not diff:
-        print("⚠️ token 文件未发生变化（Git 认为相同）")
-        print("👉 已自动更新时间，仍可触发 workflow")
-    
-    subprocess.run(["git", "add", TOKEN_FILE], check=True)
+        print("⚠️ Git 认为 token 文件无变化（仅用于提示）")
+
+    subprocess.run(["git", "add", str(TOKEN_FILE)], check=True)
     subprocess.run(["git", "commit", "-m", COMMIT_MSG], check=True)
     subprocess.run(["git", "push"], check=True)
 
