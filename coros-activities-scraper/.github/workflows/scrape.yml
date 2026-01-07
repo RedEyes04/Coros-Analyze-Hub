@@ -1,34 +1,37 @@
-name: Scrape COROS Activities
+name: Deploy COROS Token & Fetch Data
 
 on:
-  schedule:
-    - cron: '0 */3 * * *'
+  push:
+    paths:
+      - token.txt
   workflow_dispatch:
 
 jobs:
-  scrape:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
+      - name: Install tools
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          playwright install
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
 
-      - name: Run scraper
-        run: python coros-activities-scraper.py
+      - name: Sync token & fetch script to server
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            token.txt fetch.py \
+            root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/
 
-      - name: Upload JSON
-        uses: actions/upload-artifact@v4
-        with:
-          name: activities-data
-          path: activities_data.json
+      - name: Run fetch on server
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh \
+            -o StrictHostKeyChecking=no \
+            root@${{ secrets.SERVER_HOST }} << 'EOF'
+              set -e
+              cd /www/wwwroot/coros.redeyes.top
+              python3 fetch.py
+              ls -lh activities_data.json
+            EOF

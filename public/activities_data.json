@@ -1,5 +1,23 @@
 [
     {
+        "date": 20260107,
+        "name": "无锡市 运动场跑步",
+        "distance": 9602.26,
+        "duration": 2591,
+        "pace": 270,
+        "avg_hr": 179,
+        "training_load": 154
+    },
+    {
+        "date": 20260106,
+        "name": "无锡市 运动场跑步",
+        "distance": 5001.71,
+        "duration": 1398,
+        "pace": 279,
+        "avg_hr": 170,
+        "training_load": 62
+    },
+    {
         "date": 20260105,
         "name": "6+6",
         "distance": 8025.21,
@@ -520,23 +538,5 @@
         "pace": 293,
         "avg_hr": 162,
         "training_load": 98
-    },
-    {
-        "date": 20251101,
-        "name": "力量训练",
-        "distance": 0.0,
-        "duration": 607,
-        "pace": 0,
-        "avg_hr": 120,
-        "training_load": 4
-    },
-    {
-        "date": 20251101,
-        "name": "跑步机",
-        "distance": 8240.0,
-        "duration": 2528,
-        "pace": 0,
-        "avg_hr": 156,
-        "training_load": 73
     }
 ]
