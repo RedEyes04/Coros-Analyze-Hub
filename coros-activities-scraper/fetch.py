@@ -1,48 +1,69 @@
 #!/usr/bin/env python3
-"""
-服务器端 COROS 数据抓取脚本
-
-目录结构：
-/www/wwwroot/coros.redeyes.top/
-├── token.txt
-├── fetch.py
-└── activities_data.json
-"""
-
 import json
 import requests
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
-TOKEN_FILE = BASE_DIR / "token.txt"
-OUTPUT_FILE = BASE_DIR / "activities_data.json"
+TOKEN_FILE = Path("token.txt")
+OUTPUT_FILE = Path("activities_data.json")
 
-API_URL = "https://t.coros.com/activity/query"  # 示例
-
+API_URL = "https://t.coros.com/activity/query"
 
 def read_token():
-    return TOKEN_FILE.read_text().splitlines()[0].strip()
+    if not TOKEN_FILE.exists():
+        raise RuntimeError("❌ token.txt 不存在")
+
+    with open(TOKEN_FILE) as f:
+        for line in f:
+            if line.startswith("CPL-coros-token="):
+                return line.strip().split("=", 1)[1]
+
+    raise RuntimeError("❌ token.txt 中未找到有效 token")
 
 
 def fetch_data(token: str):
     headers = {
-        "Authorization": f"Bearer {token}",
-        "User-Agent": "Mozilla/5.0"
+        "Authorization": token,
+        "User-Agent": "Mozilla/5.0",
+        "Content-Type": "application/json"
     }
 
-    resp = requests.get(API_URL, headers=headers, timeout=10)
+    payload = {
+        "page": 1,
+        "size": 20
+    }
+
+    resp = requests.post(API_URL, json=payload, headers=headers, timeout=15)
+
+    if resp.status_code == 401:
+        raise RuntimeError("❌ 401：token 已失效，请重新登录获取")
+    if resp.status_code == 403:
+        raise RuntimeError("❌ 403：token 权限不足")
+    if resp.status_code == 404:
+        raise RuntimeError("❌ 404：COROS 接口地址已变动（需要更新 fetch.py）")
+
     resp.raise_for_status()
-    return resp.json()
+
+    try:
+        data = resp.json()
+    except Exception:
+        raise RuntimeError("❌ 返回内容不是 JSON，接口可能已调整")
+
+    return data
 
 
 def main():
+    print("📡 开始抓取 COROS 活动数据")
+
     token = read_token()
     data = fetch_data(token)
+
+    if not data:
+        raise RuntimeError("⚠️ 接口返回为空数据")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    print("activities_data.json 已生成")
+    print(f"✅ 抓取完成，已生成 {OUTPUT_FILE.resolve()}")
 
 
 if __name__ == "__main__":
