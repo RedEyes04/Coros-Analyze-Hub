@@ -3,7 +3,7 @@ name: Deploy COROS Token & Fetch Data
 on:
   push:
     paths:
-      - coros-activities-scraper/**
+      - coros-activities-scraper/token.txt
   workflow_dispatch:
 
 jobs:
