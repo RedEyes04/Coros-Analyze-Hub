@@ -11,6 +11,14 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true
+    open: true,
+    proxy: {
+      // 开发环境代理，解决 CORS 问题
+      '/api/coros': {
+        target: 'https://coros.redeyes.top',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/coros/, '')
+      }
+    }
   }
 })

@@ -29,8 +29,10 @@ async function loadData() {
   error.value = null
   
   try {
+    // 从服务器加载最新数据
     // 从 public 目录加载数据
-    const response = await fetch('/activities_data.json')
+    //const response = await fetch('/activities_data.json')
+    const response = await fetch('https://coros.redeyes.top/activities_data.json')
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
