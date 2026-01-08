@@ -1,13 +1,13 @@
-name: Deploy COROS Token & Fetch Data
+name: Sync COROS Cookies & Fetch Data
 
 on:
   push:
     paths:
-      - coros-activities-scraper/token.txt
+      - coros-activities-scraper/cookies.json
   workflow_dispatch:
 
 jobs:
-  deploy:
+  fetch:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,11 +18,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass rsync
 
-      - name: Sync token & fetch script to server
+      - name: Sync cookies & fetch script to server
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
             -e "ssh -o StrictHostKeyChecking=no" \
-            coros-activities-scraper/token.txt \
+            coros-activities-scraper/cookies.json \
             coros-activities-scraper/fetch.py \
             root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/
 
@@ -31,4 +31,25 @@ jobs:
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -T \
             -o StrictHostKeyChecking=no \
             root@${{ secrets.SERVER_HOST }} \
-            "cd /www/wwwroot/coros.redeyes.top && python3 fetch.py && ls -lh activities_data.json"
+            "cd /www/wwwroot/coros.redeyes.top && python3 fetch.py"
+
+      - name: Download data from server
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            root@${{ secrets.SERVER_HOST }}:/www/wwwroot/coros.redeyes.top/activities_data.json \
+            public/
+
+      - name: Commit and push data
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          if git diff --quiet public/activities_data.json 2>/dev/null; then
+            echo "📝 数据无变化"
+          else
+            git add public/activities_data.json
+            git commit -m "chore: update activities data [skip ci]"
+            git push
+            echo "✅ 数据已更新并推送"
+          fi
