@@ -1,0 +1,72 @@
+[
+  {
+    "name": "csrfToken",
+    "value": "e4-YzrzMIJOYYi2AW-Bh9g6u",
+    "domain": "t.coros.com",
+    "path": "/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_warden_session_id",
+    "value": "s_135250c7-6a112671-bb7395470e97e393",
+    "domain": "t.coros.com",
+    "path": "/",
+    "expires": 1767843753.884817,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_warden_device_id",
+    "value": "t_135250c7-6a112836-5b0bb5966a9c95f4",
+    "domain": "t.coros.com",
+    "path": "/",
+    "expires": 1802401939.331229,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "CPL-coros-token",
+    "value": "ZUIKI33LSMGBDL1FY8DGJ7HWOATNK1T7",
+    "domain": ".coros.com",
+    "path": "/",
+    "expires": 1778209952,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "CPL-coros-region",
+    "value": "2",
+    "domain": ".coros.com",
+    "path": "/",
+    "expires": 1778209952,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "locale",
+    "value": "zh-CN",
+    "domain": "t.coros.com",
+    "path": "/",
+    "expires": 1799377953,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "tfstk",
+    "value": "grkSdR6ha2HqqqtJJa-VlZ_Fvv2B0nJNRMZKjDBPv8e8vjgKokzzzDUIRqzDqYzEa6pIj0gQt34UJygEvb-2QdooqJ2KAFJwQq4Lg6059kFpvoETvnrJ0HdJzJ2p7E5Vp7v_K4TkRnw-DnZUYkI-JyKbHlaAekB8vZKbxredeuFJHmELAuBLJ2nvck4YJJF-J-KbxrULpJh9SIZvNroWbbXYf06TD0Ufp9HJL7a_06WCdxZ7Nvn8l0orhuN7WWiFJDDsX0HgAvxOOyiiw4rmRdTbHYgSeSwBdt2rfj37GbTChScxjvFjiF1ij03S65HJhnFjEcy8lvxhKzhrvvPIeFIUyY0rh5DhPEzE_mk8GVLVh2VIwfe-dF9A4m6a5z-CTiNGdoawcn1hTYVQcVa9hpSTwoqcbntf_6V8moNBcn1hV7E00R-Xc151.",
+    "domain": ".coros.com",
+    "path": "/",
+    "expires": 1783393953,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  }
+]
