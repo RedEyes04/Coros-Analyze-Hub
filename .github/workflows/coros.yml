@@ -28,11 +28,7 @@ jobs:
 
       - name: Run fetch on server
         run: |
-          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh \
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -T \
             -o StrictHostKeyChecking=no \
-            root@${{ secrets.SERVER_HOST }} << 'EOF'
-              set -e
-              cd /www/wwwroot/coros.redeyes.top
-              python3 fetch.py
-              ls -lh activities_data.json
-            EOF
+            root@${{ secrets.SERVER_HOST }} \
+            "cd /www/wwwroot/coros.redeyes.top && python3 fetch.py && ls -lh activities_data.json"
